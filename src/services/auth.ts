@@ -10,7 +10,7 @@ export const createToken = () => {
     return `${process.env.DEFAULT_TOKEN}${currentPassword}`
 }
 
-export const validadeToken = (token: string) => {
+export const validateToken = (token: string) => {
     const currentToken = createToken()
     
     return token === currentToken
