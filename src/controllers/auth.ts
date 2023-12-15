@@ -9,7 +9,6 @@ export const login: RequestHandler = (req, res) => {
     const body = loginSchema.safeParse(req.body)
     if (!body.success) return res.json({ error: 'Dados inválidos' })
 
-    // Validar senha e gerar token
     if (!auth.validadePassword(body.data.password)) {
         return res.status(403).json({ error: 'Acesso negado' })
     }
@@ -17,4 +16,16 @@ export const login: RequestHandler = (req, res) => {
     return res.json({
         token: auth.createToken()
     })
+}
+
+export const validade: RequestHandler = (req, res, next) => {
+    if(!req.headers.authorization){
+        return res.status(403).json({error:'Acesso negado'})
+    }
+
+    const token = req.headers.authorization.split(' ')[1];
+    if(!auth.validadeToken(token)){
+        return res.status(403).json({error:'Acesso negado'})
+    }
+    next()
 }
